@@ -1,0 +1,15 @@
+#Dates{
+  display: flex;
+}
+
+#DatesStart{
+  flex: 1;
+}
+
+#Options{
+  display: flex;
+}
+
+#Optionnal{
+  flex: 1;
+}
