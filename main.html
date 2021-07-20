@@ -1,0 +1,61 @@
+<!--Author: GUYOMARCH Nicolas-->
+<!--Github: -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Orundum planner</title>
+</head>
+
+<body>
+
+    <h1>
+        Orundum planner
+    </h1>
+
+    <div id="Dates">
+        <div id="DatesStart">
+            <label for="start">Start date:</label><br>
+            <input type="date" id="DatesStartCalendar" name="CalendarStart" value="2021-07-20" max="2121-12-31">
+        </div>
+
+        <div id="DatesEnd">
+            <label for="end">End of saving</label> <br>
+            <input type="date" id="DatesEndCalendar" name="CalendarEnd" value="2021-07-20" max="2121-12-31">
+        </div>
+    </div>
+
+    <div id="Options">
+        <div id="Optionnal">
+            <input type="checkbox" id="CheckToday" name="CheckToday" value="No">
+            <label for="CheckToday">Count today ?</label> <br>
+
+            <input type="checkbox" id="MonthlyTick" name="MonthlyTick" value="No">
+            <label for="MonthlyTick">Did you not bought the monthly ticket yet ?</label> <br>
+
+            <input type="checkbox" id="POCount" name="POCount" value="No">
+            <label for="POCount">Count the PO as Orundum ?</label>
+        </div>
+
+        <div id="Numbers">
+            <input type="number" id="OrundumLimit" name="OrundumLimit">
+            <label for="OrundumLimit">How much Orundum can you get weekly from annihilation ?</label> <br>
+
+            <input type="number" id="OrundumAnni" name="OrundumAnni">
+            <label for="OrundumLimit">How much Orundum did you got this week from annihilation ?</label> <br>
+
+            <input type="number" id="OrundumOwn" name="OrundumOwn">
+            <label for="OrundumOwn">How much Orundum do you own ?</label> <br>
+
+            <input type="number" id="TicketsRoll" name="TicketsRoll">
+            <label for="TicketsRoll">How many roll can you make from tickets ?</label> <br>
+
+            <input type="number" id="POwn" name="POwn">
+            <label for="POwn">How much PO do you own ?</label>
+        </div>
+    </div>
+
+</body>
+
+</html>
