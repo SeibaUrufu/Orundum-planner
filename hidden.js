@@ -16,18 +16,18 @@ if(((1 == m)||(3 == m)||(5 == m)||(7 == m)||(8 == m)||(10 == m)||(12 == m)) && (
         m1 +=1; //Else we just increase the day by 1
     }
 } else if(((4 == m)||(6 == m)||(9 == m)||(11 == m) ) && (31 == d1)) { //We test if the month is one with 30 days, and if the d1 is egal to 31
-    d1 = 1;
-    m1 += 1;
-} else  {
-    if(((0 == y%100) && (0 == y%4)) || (0 == y%400)){
-        if(29 == d) {
-            d1 = 1;
-            m1 = 3;
+    d1 = 1; //We set the following day to 1
+    m1 += 1; //We increase the month by 1
+} else  { //February case. Fuck this month
+    if(((0 == y%100) && (0 == y%4)) || (0 == y%400)){ //We do a test if it's a year with 366 days
+        if(29 == d) { //We then check if the current day is the 29th, if it's a year with 366 days
+            d1 = 1; //We set the day to 1 for the following day
+            m1 = 3; //We set the month to March
         }
-    } else {
-        if( 28 == d) {
-            d1 = 1;
-            m1 = 3;
+    } else { //Else it's a year with 365 days
+        if( 28 == d) { //If it's the 28th days
+            d1 = 1; //We set the following day to 1
+            m1 = 3; //The month to March
         }
     }
 }
