@@ -1,4 +1,4 @@
-
+//Calendar part
 n =  new Date(); //Creation of an Date object
 y = n.getFullYear(); //We save the current year
 y1 = y; //We save the current year for dateEndCalendar
