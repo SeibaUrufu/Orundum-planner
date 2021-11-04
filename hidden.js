@@ -68,13 +68,13 @@ action.addEventListener("click", nbOfDays);
 function nbOfDays(){
 
     //Var
-    var endDateArray = document.getElementById("DatesEndCalendar").value.split("-"); //We get the value in DatesEndCalendar, and we create an array by removing the -
-    var startDateArray = document.getElementById("DatesStartCalendar").value.split("-"); //We get the value in DatesStartCalendar, and we create an array by removing the -
-    var endDay = new Date(endDateArray[1] + "/" + endDateArray[2] + "/" + endDateArray[0]); //We save the following day in the format mm/dd/yyyy format
+    const endDateArray = document.getElementById("DatesEndCalendar").value.split("-"); //We get the value in DatesEndCalendar, and we create an array by removing the -
+    const startDateArray = document.getElementById("DatesStartCalendar").value.split("-"); //We get the value in DatesStartCalendar, and we create an array by removing the -
+    const endDay = new Date(endDateArray[1] + "/" + endDateArray[2] + "/" + endDateArray[0]); //We save the following day in the format mm/dd/yyyy format
     const currentDay = new Date(startDateArray[1] + "/" + startDateArray[2] + "/" + startDateArray[0]); //TWe save the date of start in the mm/dd/yyyy format
 
     //Operation
-    const numberOfDays = Math.ceil(Math.abs(endDay-currentDay)/(1000 * 60 * 60 * 24));
+    const numberOfDays = Math.ceil(Math.abs(endDay-currentDay)/(1000 * 60 * 60 * 24)); //We divide the difference of the 2 date, by the value in millisecond of 1 days. We get the absolute value, and we round up this value.
     console.log(numberOfDays);
 }
 
