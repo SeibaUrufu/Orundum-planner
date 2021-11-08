@@ -4,7 +4,7 @@ y = n.getFullYear(); //We save the current year
 y1 = y; //We save the current year for dateEndCalendar
 m = n.getMonth() + 1; //We save the month and add 1, because it's used as 0-11 in Date
 m1 = m; //We save the month for the dateEndCalendar, we suppose it's the same month
-d = n.getDay(); //We save the current day
+d = n.getDate(); //We save the current day
 d1 = d+1; //The next day
 
 if(((1 == m)||(3 == m)||(5 == m)||(7 == m)||(8 == m)||(10 == m)||(12 == m)) && (32 == d1)) { //We test if the month is one with 31 days and if the day for tomorrow is 32
@@ -33,11 +33,11 @@ if(((1 == m)||(3 == m)||(5 == m)||(7 == m)||(8 == m)||(10 == m)||(12 == m)) && (
 }
 
 if(d<10){ //If the day is inferior to 10, then we add a 0 to d, so it doesn't create a problem in the date format
-    d="0"+d;
+    d = "0" + d;
 }
 
 if(d1<10){ //If the day is inferior to 10, then we add a 0 to d1, so it doesn't create a problem in the date format
-    d1="0"+d1;
+    d1 = "0" + d1;
 }
 
 if(m < 10) { //If the month is inferior to 10, we add a 0 to m, so it doesn't create a problem for the date format
@@ -50,7 +50,6 @@ if(m1 < 10) { //If the month is inferior to 10, we add a 0 to m, so it doesn't c
 
 var todayDate = y + "-" + m + "-" + d; //We create the format of the string
 var tomorrowDate = y1 + "-" + m1 + "-" + d1; //We create the format of the string
-console.log(tomorrowDate)
 
 var dateStartCalendar = document.getElementById("DatesStartCalendar"); //We get the location of the id DatesStartCalendar
 var dateEndCalendar =document.getElementById("DatesEndCalendar") //We get the location of the id DatesEndCalendar
@@ -74,7 +73,14 @@ function nbOfDays(){
     const currentDay = new Date(startDateArray[1] + "/" + startDateArray[2] + "/" + startDateArray[0]); //TWe save the date of start in the mm/dd/yyyy format
 
     //Operation
-    const numberOfDays = Math.ceil(Math.abs(endDay-currentDay)/(1000 * 60 * 60 * 24)); //We divide the difference of the 2 date, by the value in millisecond of 1 days. We get the absolute value, and we round up this value.
+    var numberOfDays = Math.ceil(Math.abs(endDay-currentDay)/(1000 * 60 * 60 * 24)); //We divide the difference of the 2 date, by the value in millisecond of 1 days. We get the absolute value, and we round up this value.
+
+    const isChecked = document.getElementById("CheckEndDay"); //We save the checkbox CheckEndDay which serve to know if the user want to add the end date in the count of day
+
+    if(isChecked.checked) { //Test if the checkbox is checked
+        numberOfDays+= +isChecked.value; //If it is, we increase the number of day by 1
+    }
+
     console.log(numberOfDays);
 }
 
