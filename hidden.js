@@ -61,10 +61,18 @@ dateEndCalendar.value=tomorrowDate; //We change what is saved in value by the ne
 //Var
 
 var action = document.getElementById("Let's Go"); //The button to start the magic
+var numberOfDays;
+var orundumOwned;
+var annihilationLimit;
+var annihilationFarmed;
+var ticketsOwned;
+var poOwned;
 
-action.addEventListener("click", nbOfDays);
+action.addEventListener("click", getValue);
 
-function nbOfDays(){
+//Function
+
+function nbOfDays() {
 
     //Var
     const endDateArray = document.getElementById("DatesEndCalendar").value.split("-"); //We get the value in DatesEndCalendar, and we create an array by removing the -
@@ -73,15 +81,28 @@ function nbOfDays(){
     const currentDay = new Date(startDateArray[1] + "/" + startDateArray[2] + "/" + startDateArray[0]); //TWe save the date of start in the mm/dd/yyyy format
 
     //Operation
-    var numberOfDays = Math.ceil(Math.abs(endDay-currentDay)/(1000 * 60 * 60 * 24)); //We divide the difference of the 2 date, by the value in millisecond of 1 days. We get the absolute value, and we round up this value.
+    numberOfDays = Math.ceil(Math.abs(endDay-currentDay)/(1000 * 60 * 60 * 24)); //We divide the difference of the 2 date, by the value in millisecond of 1 days. We get the absolute value, and we round up this value.
 
     const isChecked = document.getElementById("CheckEndDay"); //We save the checkbox CheckEndDay which serve to know if the user want to add the end date in the count of day
 
     if(isChecked.checked) { //Test if the checkbox is checked
         numberOfDays+= +isChecked.value; //If it is, we increase the number of day by 1
     }
-
-    console.log(numberOfDays);
 }
 
+function getValue() {
+        //Var
+    //Get
+    var orundum = document.getElementById("OrundumOwn").value;
+    var orundumLimitAnni = document.getElementById("OrundumLimit").value;
+    var orundumAnni = document.getElementById("OrundumAnni").value;
+    var tickets = document.getElementById("TicketsRoll").value;
+    var poOwn = document.getElementById("POwn").value;
 
+    //Save the value inside global var
+    orundumOwned = orundum;
+    annihilationLimit = orundumLimitAnni;
+    annihilationFarmed = orundumAnni;
+    ticketsOwned = tickets;
+    poOwned = poOwn;
+}
