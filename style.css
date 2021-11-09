@@ -13,3 +13,7 @@
 #Optionnal{
   flex: 1;
 }
+
+#title {
+  text-align: center;
+}
