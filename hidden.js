@@ -59,6 +59,10 @@ dateEndCalendar.value=tomorrowDate; //We change what is saved in value by the ne
 
     //Action
 //Var
+const endDateArray = document.getElementById("DatesEndCalendar").value.split("-"); //We get the value in DatesEndCalendar, and we create an array by removing the -
+const startDateArray = document.getElementById("DatesStartCalendar").value.split("-"); //We get the value in DatesStartCalendar, and we create an array by removing the -
+const endDay = new Date(endDateArray[1] + "/" + endDateArray[2] + "/" + endDateArray[0]); //We save the following day in the format mm/dd/yyyy format
+const currentDay = new Date(startDateArray[1] + "/" + startDateArray[2] + "/" + startDateArray[0]); //TWe save the date of start in the mm/dd/yyyy format
 
 var action = document.getElementById("Let's Go"); //The button to start the magic
 var numberOfDays;
@@ -67,18 +71,14 @@ var annihilationLimit;
 var annihilationFarmed;
 var ticketsOwned;
 var poOwned;
+var numberOfRoll=0;
 
+//Listener
 action.addEventListener("click", getValue);
 
 //Function
 
 function nbOfDays() {
-
-    //Var
-    const endDateArray = document.getElementById("DatesEndCalendar").value.split("-"); //We get the value in DatesEndCalendar, and we create an array by removing the -
-    const startDateArray = document.getElementById("DatesStartCalendar").value.split("-"); //We get the value in DatesStartCalendar, and we create an array by removing the -
-    const endDay = new Date(endDateArray[1] + "/" + endDateArray[2] + "/" + endDateArray[0]); //We save the following day in the format mm/dd/yyyy format
-    const currentDay = new Date(startDateArray[1] + "/" + startDateArray[2] + "/" + startDateArray[0]); //TWe save the date of start in the mm/dd/yyyy format
 
     //Operation
     numberOfDays = Math.ceil(Math.abs(endDay-currentDay)/(1000 * 60 * 60 * 24)); //We divide the difference of the 2 date, by the value in millisecond of 1 days. We get the absolute value, and we round up this value.
@@ -105,4 +105,36 @@ function getValue() {
     annihilationFarmed = orundumAnni;
     ticketsOwned = tickets;
     poOwned = poOwn;
+}
+
+function execute() {
+    //Var
+    const _poToOrundum = document.getElementById("POCount"); //We save the checkbox in a variable
+    const _notBoughtMonthly = document.getElementById("MonthlyTick"); //We save the checkbox in a variable
+    const _numberOfWeeks = Math.floor(numberOfDays / 7); //Number of weeks left
+    var _numberOfMonths = (endDay.getTime() - currentDay.getTime() ) / 1000; //The difference in millisecond between the 2 date
+    _numberOfMonths /=(60 * 60 * 24 * 7 * 4); //We divide the difference with the calcul of a month (4 wekks, 7 days, 24 hours, 60 minutes, 60 seconds)
+    Math.floor(_numberOfMonths); //We round it down so we don't take the current month in account
+
+    //If section
+    if(_poToOrundum.checked) { //Test if the checkbox is checked
+        numberOfRoll += (poOwned * 180) / 600; //If it is checked, we add the divsion by 600 the number of PO multiplied by 180
+    }
+
+    if(_notBoughtMonthly.checked) { //Test if the checkbox is checked
+        numberOfRoll += 5; //4 tickets and 600 orundum
+    }
+
+    numberOfRoll += orundumOwned / 600 + ticketsOwned; //We add the orundum already owned divided by 600 and the tickets owned
+
+    numberOfRoll += (numberOfDays * 100) / 600 ; //We add the orundum from the daily mission
+
+    numberOfRoll += (_numberOfWeeks * 500 ) / 600; //We add the orundum from the weekly mission
+
+    numberOfRoll += (_numberOfWeeks * annihilationLimit) / 600; //We add the orundum from the weekly annihilation
+
+    numberOfRoll += (annihilationLimit - annihilationFarmed ) / 600; //We add the orundum from the current week
+
+    numberOfRoll += _numberOfMonths * 6; //We add the tickets and orundum from the shop and the login bonus
+
 }
