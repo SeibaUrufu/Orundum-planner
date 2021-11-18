@@ -57,41 +57,59 @@ var dateEndCalendar =document.getElementById("DatesEndCalendar") //We get the lo
 dateStartCalendar.value=todayDate; //We change what is saved in value by the new day format
 dateEndCalendar.value=tomorrowDate; //We change what is saved in value by the new day format
 
-    //Action
-//Var
-const endDateArray = document.getElementById("DatesEndCalendar").value.split("-"); //We get the value in DatesEndCalendar, and we create an array by removing the -
-const startDateArray = document.getElementById("DatesStartCalendar").value.split("-"); //We get the value in DatesStartCalendar, and we create an array by removing the -
-const endDay = new Date(endDateArray[1] + "/" + endDateArray[2] + "/" + endDateArray[0]); //We save the following day in the format mm/dd/yyyy format
-const currentDay = new Date(startDateArray[1] + "/" + startDateArray[2] + "/" + startDateArray[0]); //TWe save the date of start in the mm/dd/yyyy format
+    //Var
 
-var action = document.getElementById("Let's Go"); //The button to start the magic
-var numberOfDays;
+var numberOfDays = 0;
 var orundumOwned;
 var annihilationLimit;
 var annihilationFarmed;
 var ticketsOwned;
 var poOwned;
-var numberOfRoll=0;
+var numberOfRoll;
+
+    //Action
+
+var action = document.getElementById("Let's Go"); //The button to start the magic
+
 
 //Listener
-action.addEventListener("click", getValue);
+action.addEventListener("click", execute);
 
 //Function
 
-function nbOfDays() {
+function nbOfDays(startDateArray, endDateArray) {
+
+    //Var
+    
+    const endDay = new Date(endDateArray[1] + "/" + endDateArray[2] + "/" + endDateArray[0]); //We save the following day in the format mm/dd/yyyy format
+    const currentDay = new Date(startDateArray[1] + "/" + startDateArray[2] + "/" + startDateArray[0]); //TWe save the date of start in the mm/dd/yyyy format
 
     //Operation
     numberOfDays = Math.ceil(Math.abs(endDay-currentDay)/(1000 * 60 * 60 * 24)); //We divide the difference of the 2 date, by the value in millisecond of 1 days. We get the absolute value, and we round up this value.
+    
 
     const isChecked = document.getElementById("CheckEndDay"); //We save the checkbox CheckEndDay which serve to know if the user want to add the end date in the count of day
 
     if(isChecked.checked) { //Test if the checkbox is checked
         numberOfDays+= +isChecked.value; //If it is, we increase the number of day by 1
     }
+    return [endDay, currentDay] //We return an array containting the 2 date
+}
+
+function nbOfMonth(startDateArray, endDateArray){
+    const _StartDate = startDateArray; //We save the start in a local variable
+    const _EndDate = endDateArray; //We save the end in a local variable
+    var result; //It's here we will save the number of month between the 2 date
+    if(_EndDate[0] == _StartDate[0]) { //If it's in the same year, then it's a simple substraction
+        result = _EndDate[1] - _StartDate[1];
+    } else { //It's a substraction, where we add a number of months
+        result = _EndDate[1] - _StartDate[1] + 12;
+    }
+
+    return result; //We return the number of months between the 2 dates
 }
 
 function getValue() {
-        //Var
     //Get
     var orundum = document.getElementById("OrundumOwn").value;
     var orundumLimitAnni = document.getElementById("OrundumLimit").value;
@@ -100,41 +118,82 @@ function getValue() {
     var poOwn = document.getElementById("POwn").value;
 
     //Save the value inside global var
-    orundumOwned = orundum;
-    annihilationLimit = orundumLimitAnni;
-    annihilationFarmed = orundumAnni;
-    ticketsOwned = tickets;
-    poOwned = poOwn;
+    orundumOwned = Number(orundum);
+    annihilationLimit = Number(orundumLimitAnni);
+    annihilationFarmed = Number(orundumAnni);
+    ticketsOwned = Number(tickets);
+    poOwned = Number(poOwn);
+}
+
+function showResult(numberOfRoll){
+    //Var
+    const _texte = "In " + numberOfDays + " days, you will be able to reach to reach an amount of " + numberOfRoll + " rolls.";
+
+    //Action
+    document.getElementById("Result").innerHTML=_texte;
+    console.log(_texte)
+
 }
 
 function execute() {
+    //Var for the function call
+    var dateArray; //Var to save the array containing the array with the 2 date
+    const endDateArray = document.getElementById("DatesEndCalendar").value.split("-"); //We get the value in DatesEndCalendar, and we create an array by removing the -
+    const startDateArray = document.getElementById("DatesStartCalendar").value.split("-"); //We get the value in DatesStartCalendar, and we create an array by removing the -
+
+    //Call to the other function to get some information
+    getValue();
+    dateArray=nbOfDays(startDateArray, endDateArray);
+
     //Var
     const _poToOrundum = document.getElementById("POCount"); //We save the checkbox in a variable
     const _notBoughtMonthly = document.getElementById("MonthlyTick"); //We save the checkbox in a variable
     const _numberOfWeeks = Math.floor(numberOfDays / 7); //Number of weeks left
-    var _numberOfMonths = (endDay.getTime() - currentDay.getTime() ) / 1000; //The difference in millisecond between the 2 date
-    _numberOfMonths /=(60 * 60 * 24 * 7 * 4); //We divide the difference with the calcul of a month (4 wekks, 7 days, 24 hours, 60 minutes, 60 seconds)
+    const _numberOfMonths = nbOfMonth(startDateArray, endDateArray);
     Math.floor(_numberOfMonths); //We round it down so we don't take the current month in account
+    numberOfRoll = 0;
+
+    console.log("Number of months: "+_numberOfMonths)
+    
+    console.log("Nombre de roll: " + numberOfRoll)
 
     //If section
     if(_poToOrundum.checked) { //Test if the checkbox is checked
         numberOfRoll += (poOwned * 180) / 600; //If it is checked, we add the divsion by 600 the number of PO multiplied by 180
     }
 
+    console.log("Nombre de roll après PO: " + numberOfRoll)
+
     if(_notBoughtMonthly.checked) { //Test if the checkbox is checked
         numberOfRoll += 5; //4 tickets and 600 orundum
     }
 
-    numberOfRoll += orundumOwned / 600 + ticketsOwned; //We add the orundum already owned divided by 600 and the tickets owned
+    console.log("Nombre de roll après ticket monthly: " + numberOfRoll)
 
-    numberOfRoll += (numberOfDays * 100) / 600 ; //We add the orundum from the daily mission
+    numberOfRoll += +orundumOwned / 600 + +ticketsOwned; //We add the orundum already owned divided by 600 and the tickets owned
+
+    console.log("Nombre de roll après Orundum et Ticket possédé: " + numberOfRoll)
+
+    numberOfRoll += (+numberOfDays * 100) / 600 ; //We add the orundum from the daily mission
+
+    console.log("Nombre de roll après dailymission: " + numberOfRoll)
 
     numberOfRoll += (_numberOfWeeks * 500 ) / 600; //We add the orundum from the weekly mission
 
-    numberOfRoll += (_numberOfWeeks * annihilationLimit) / 600; //We add the orundum from the weekly annihilation
+    console.log("Nombre de roll après weekly mission: " + numberOfRoll)
 
-    numberOfRoll += (annihilationLimit - annihilationFarmed ) / 600; //We add the orundum from the current week
+    numberOfRoll += (_numberOfWeeks * +annihilationLimit) / 600; //We add the orundum from the weekly annihilation
+
+    console.log("Nombre de roll après annihilation: " + numberOfRoll)
+
+    numberOfRoll += (+annihilationLimit - +annihilationFarmed ) / 600; //We add the orundum from the current week
+
+    console.log("Nombre de roll après actuel annihilation: " + numberOfRoll)
 
     numberOfRoll += _numberOfMonths * 6; //We add the tickets and orundum from the shop and the login bonus
+
+    numberOfRoll = Math.floor(numberOfRoll);
+
+    showResult(numberOfRoll); //Call to the function to show the result.
 
 }
